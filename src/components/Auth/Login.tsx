@@ -8,6 +8,7 @@ import { loginValidation } from "../../validation/loginValidation";
 import { RECAPTCHA_SITE_KEY } from "../../services/config";
 import "../../styles/login.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Login: React.FC = () => {
   const { auth, handleLoginFun } = useAuth();
@@ -30,7 +31,9 @@ const Login: React.FC = () => {
         return;
       }
       const result = await handleLoginFun(values.identifier, values.password);
+      console.log({ result });
       if (result) {
+        toast.success("Login successfully");
         navigate("/");
         localStorage.setItem("login", result.id);
       }

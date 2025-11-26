@@ -10,3 +10,7 @@
     transition: .3s;
     outline: none;
 }
+
+.navbar-container {
+    background-color: #f5f2f2 !important;
+}

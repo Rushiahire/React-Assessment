@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/slices/authSlice";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import "../styles/navbar.css";
+import { IoLogOutOutline } from "react-icons/io5";
 // import { RootState } from "./store";
 
 // import { RootState, useAppDispatch } from "../store";
@@ -20,7 +21,7 @@ const Navbar = () => {
     navigate("/login");
   };
   return (
-    <nav className="navbar navbar-light bg-white px-3 shadow-sm">
+    <nav className="navbar navbar-light px-3 shadow-sm navbar-container">
       <Link className="navbar-brand" to="/">
         Kanban
       </Link>
@@ -28,19 +29,22 @@ const Navbar = () => {
         {login ? (
           <>
             {/* <span className="me-3">Hi, {currentUser?.name}</span> */}
-            <Link
+            {/* <Link
               className="btn btn-outline-primary me-2 py-1 px-2"
               to="/add-task"
               role="button"
             >
               <span className="text">Add Task</span> <IoIosAddCircleOutline />
-            </Link>
+            </Link> */}
 
             <button
               className="btn btn-outline-secondary py-1 px-2"
               onClick={handleLogoutFun}
             >
-              Logout
+              Logout{" "}
+              <span className="ps-1">
+                <IoLogOutOutline size={20} />
+              </span>
             </button>
           </>
         ) : (

@@ -75,6 +75,7 @@ const slice = createSlice({
     // login
     builder.addCase(login.pending, (s) => { s.loading = true; s.error = null; });
     builder.addCase(login.fulfilled, (s, a) => {
+      console.log({s,a})
       s.loading = false;
       s.currentUser = a.payload;
       s.error = null;
