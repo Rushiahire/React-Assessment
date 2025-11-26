@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": "794e",
+      "name": "rushikesh",
+      "username": "rushi",
+      "email": "rushi@gmail.com",
+      "contact": "9988776644",
+      "password": "rushikesh"
+    },
+    {
+      "id": "1764066832909",
+      "name": "tester",
+      "username": "test",
+      "email": "test@gmail.com",
+      "contact": 8877994433,
+      "password": "rushikesh"
+    },
+    {
+      "id": "1764066890243",
+      "name": "demo",
+      "username": "demo1",
+      "email": "demo@gmail.com",
+      "contact": 8844773483,
+      "password": "rushi"
+    },
+    {
+      "id": "1764067506250",
+      "name": "testt",
+      "username": "testtt",
+      "email": "test2@gmail.com",
+      "contact": 9948829535,
+      "password": "rushik"
+    },
+    {
+      "id": "1764067931958",
+      "name": "rishi",
+      "username": "rishi",
+      "email": "rishi@gmail.com",
+      "contact": 9988774466,
+      "password": "rishikesh"
+    }
+  ]
+}

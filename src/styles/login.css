@@ -1,0 +1,51 @@
+/* ---- Login Page UI Styling ---- */
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+}
+
+.login-card {
+  width: 120%;
+  max-width: 500px;
+  border-radius: 14px;
+  padding: 8px 20px;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-3px);
+}
+
+.login-card h3 {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #2d3748;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+input.form-control {
+  padding: 5px 5px;
+  border-radius: 8px;
+}
+
+input.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+button.btn-primary {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+}
