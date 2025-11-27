@@ -1,6 +1,6 @@
 // src/services/authApi.ts
 import axios from "axios";
-import type { User } from "../types/types";
+import type { User } from "../../types/types";
 
 const BASE = "http://localhost:5000";
 const USERS = `${BASE}/users`;
@@ -44,12 +44,4 @@ export async function loginWithIdentifier(identifier: string, password: string) 
   if (arr?.length > 0) return arr[0];
 
   return null;
-}
-
-/**
- * Get token (example API)
- */
-export async function getTokenFromApi(payload: { username: string; password: string }) {
-  const { data } = await axios.post("http://localhost:5000/token", payload);
-  return data; // expected { access_token: "..." }
 }

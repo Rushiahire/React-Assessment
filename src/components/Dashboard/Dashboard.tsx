@@ -31,7 +31,6 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Navbar />
       {loading ? (
         <>
           <Loader />
