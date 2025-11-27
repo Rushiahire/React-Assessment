@@ -25,7 +25,9 @@ const TaskCard = ({
         <div style={{ flex: 1 }}>
           <div className="d-flex align-items-center justify-content-between">
             <strong>{task.taskName}</strong>
-            <Badge bg={PRIORITY_BADGE[task.priority]}>{task.priority}</Badge>
+            <Badge bg={PRIORITY_BADGE[task.priority]}>
+              {task?.priority?.toUpperCase()}
+            </Badge>
           </div>
           <div style={{ fontSize: 12, color: "#666" }}>
             Due: {task.deadline}

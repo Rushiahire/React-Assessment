@@ -1,44 +1,22 @@
-// src/pages/auth/Login.tsx
-import React, { useEffect, useState } from "react";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import React, { memo } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuthHook";
-import { loginValidation } from "../../validation/loginValidation";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import useLoginHook from "../../hooks/useLoginHook";
 import { RECAPTCHA_SITE_KEY } from "../../services/config";
 import "../../styles/login.css";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { loginValidation } from "../../validation/loginValidation";
 
 const Login: React.FC = () => {
-  const { auth, handleLoginFun } = useAuth();
-  const navigate = useNavigate();
-
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [captchaError, setCaptchaError] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    if (auth.currentUser) navigate("/");
-  }, [auth.currentUser, navigate]);
-
-  const formik = useFormik({
-    initialValues: { identifier: "", password: "" },
-    validationSchema: loginValidation,
-    onSubmit: async (values) => {
-      if (!captchaToken) {
-        setCaptchaError("Please verify that you're not a robot.");
-        return;
-      }
-      const result = await handleLoginFun(values.identifier, values.password);
-      console.log({ result });
-      if (result) {
-        toast.success("Login successfully");
-        navigate("/");
-        localStorage.setItem("login", result.id);
-      }
-    },
-  });
+  const {
+    auth,
+    initialValues,
+    handleSubmit,
+    showPassword,
+    togglePassword,
+    setCaptchaToken,
+  } = useLoginHook();
 
   return (
     <div className="login-container">
@@ -46,76 +24,85 @@ const Login: React.FC = () => {
         <h3>Login</h3>
 
         {auth.error && <div className="alert alert-danger">{auth.error}</div>}
-        {captchaError && (
-          <div className="alert alert-danger">{captchaError}</div>
-        )}
 
-        <form onSubmit={formik.handleSubmit}>
-          <div className="mb-2">
-            <label className="form-label">Username or Email *</label>
-            <input
-              className={`form-control ${
-                formik.touched.identifier && formik.errors.identifier
-                  ? "is-invalid"
-                  : ""
-              }`}
-              {...formik.getFieldProps("identifier")}
-              autoComplete="off"
-            />
-            {formik.touched.identifier && formik.errors.identifier && (
-              <div className="invalid-feedback">{formik.errors.identifier}</div>
-            )}
-          </div>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={loginValidation}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              {/* Identifier */}
+              <div className="mb-2">
+                <label className="form-label">
+                  Username or Email <span className="text-danger">*</span>
+                </label>
+                <Field
+                  name="identifier"
+                  className="form-control"
+                  autoComplete="off"
+                />
+                <ErrorMessage
+                  name="identifier"
+                  component="div"
+                  className="invalid-feedback d-block"
+                />
+              </div>
 
-          <div className="mb-2">
-            <label className="form-label">Password *</label>
-            <div className="input-group">
-              <input
-                type={showPassword ? "text" : "password"}
-                className={`form-control ${
-                  formik.touched.password && formik.errors.password
-                    ? "is-invalid"
-                    : ""
-                }`}
-                {...formik.getFieldProps("password")}
-                autoComplete="off"
-              />
-              <span
-                className="input-group-text"
-                style={{ cursor: "pointer" }}
-                onClick={() => setShowPassword((s) => !s)}
-              >
-                {showPassword ? <FaEye /> : <FaEyeSlash />}
-              </span>
-              {formik.touched.password && formik.errors.password && (
-                <div className="invalid-feedback d-block">
-                  {formik.errors.password}
+              {/* Password */}
+              <div className="mb-2">
+                <label className="form-label">
+                  Password <span className="text-danger">*</span>
+                </label>
+                <div className="input-group">
+                  <Field
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    className="form-control"
+                    autoComplete="off"
+                  />
+
+                  {/* Toggle Icon */}
+                  <span
+                    className="input-group-text password-toggle"
+                    onClick={togglePassword}
+                  >
+                    {showPassword ? <FaEye /> : <FaEyeSlash />}
+                  </span>
                 </div>
-              )}
-            </div>
-          </div>
 
-          <div className="mb-3">
-            <ReCAPTCHA
-              sitekey={RECAPTCHA_SITE_KEY}
-              onChange={(t) => setCaptchaToken(t)}
-            />
-          </div>
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="invalid-feedback d-block"
+                />
+              </div>
 
-          <button
-            className="btn btn-primary my-3"
-            type="submit"
-            disabled={auth.loading}
-          >
-            {auth.loading ? "Logging in..." : "Login"}
-          </button>
-          <div className="text-center">
-            Didn't have an account? <Link to="/register">Signup</Link>
-          </div>
-        </form>
+              {/* Captcha */}
+              <div className="mb-3 mt-4">
+                <ReCAPTCHA
+                  sitekey={RECAPTCHA_SITE_KEY}
+                  onChange={setCaptchaToken}
+                />
+              </div>
+
+              <button
+                className="btn btn-primary my-3"
+                type="submit"
+                disabled={auth.loading || isSubmitting}
+              >
+                {auth.loading ? "Logging in..." : "Login"}
+              </button>
+
+              <div className="text-center">
+                Don't have an account? <Link to="/register">Signup</Link>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default memo(Login);

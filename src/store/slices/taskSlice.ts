@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import * as taskApi from "../../services/taskApi";
+import * as taskApi from "../../services/api/taskApi";
 import type { Task } from "../../types/types";
 
 type TasksState = {

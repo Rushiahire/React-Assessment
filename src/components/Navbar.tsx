@@ -20,32 +20,52 @@ const Navbar = () => {
     localStorage.removeItem("login");
     navigate("/login");
   };
+
+  console.log({ currentUser });
   return (
-    <nav className="navbar navbar-light px-3 shadow-sm navbar-container">
+    <nav className="navbar navbar-light px-lg-3 px-1 shadow-sm navbar-container">
       <Link className="navbar-brand" to="/">
         Kanban
       </Link>
       <div>
         {login ? (
           <>
-            {/* <span className="me-3">Hi, {currentUser?.name}</span> */}
-            {/* <Link
-              className="btn btn-outline-primary me-2 py-1 px-2"
-              to="/add-task"
-              role="button"
-            >
-              <span className="text">Add Task</span> <IoIosAddCircleOutline />
-            </Link> */}
+            <div className="d-flex justify-content-between ">
+              {currentUser && (
+                <div className="d-flex align-items-center gap-2 me-4">
+                  {/* Profile Image */}
 
-            <button
-              className="btn btn-outline-secondary py-1 px-2"
-              onClick={handleLogoutFun}
-            >
-              Logout{" "}
-              <span className="ps-1">
-                <IoLogOutOutline size={20} />
-              </span>
-            </button>
+                  <img
+                    src={
+                      currentUser.profileImage || "./public/images/download.png"
+                    }
+                    alt="profile"
+                    style={{
+                      width: 38,
+                      height: 38,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      border: "2px solid #ddd",
+                      cursor: "pointer",
+                    }}
+                  />
+
+                  {/* Username */}
+                  <span className="fw-bold">
+                    {currentUser?.name && `Hi ${currentUser?.name}`}
+                  </span>
+                </div>
+              )}
+              <button
+                className="btn btn-outline-secondary py-1 px-2"
+                onClick={handleLogoutFun}
+              >
+                Logout{" "}
+                <span className="ps-1">
+                  <IoLogOutOutline size={20} />
+                </span>
+              </button>
+            </div>
           </>
         ) : (
           <>

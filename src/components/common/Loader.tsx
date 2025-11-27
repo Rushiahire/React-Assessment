@@ -1,8 +1,10 @@
 const Loader = () => {
   return (
     <>
-      <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
+      <div className="text-center">
+        <div className="spinner-border text-center mt-5" role="status">
+          <span className="visually-hidden text-center">Loading...</span>
+        </div>
       </div>
     </>
   );

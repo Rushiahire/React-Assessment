@@ -1,13 +1,12 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Login from "../components/Auth/Login";
-import Register from "../components/Auth/Register";
-import Dashboard from "../components/Dashboard/Dashboard";
+import React, { Suspense } from "react";
 import { useSelector } from "react-redux";
-import ProtectedRoute from "./PrivatedRoute";
-import { Suspense } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Loader from "../components/common/Loader";
-import AddTask from "../components/AddTask/AddTask";
 import NotFoundPage from "../components/NoFoundPage";
+import ProtectedRoute from "./PrivatedRoute";
+const Login = React.lazy(() => import("../components/Auth/Login"));
+const Register = React.lazy(() => import("../components/Auth/Register"));
+const Dashboard = React.lazy(() => import("../components/Dashboard/Dashboard"));
 
 const AppRoutes = () => {
   const currentUser = useSelector((s: any) => s?.auth?.currentUser);
