@@ -4,8 +4,9 @@ name: string
 username: string
 email: string
 contact?: string
-password: string
+password: string | null;
 profileImage?: string // base64 or data URL
+provider?:string
 }
 
 export type AuthState = {
@@ -26,3 +27,5 @@ export interface Task {
   deadline: string;
   ownerId?: string;        // optional (since stored inside user)
 }
+
+

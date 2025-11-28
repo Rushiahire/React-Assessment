@@ -1,7 +1,7 @@
 // src/hooks/useAuthHook.ts
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { register, login, logout, clearError } from "../store/slices/authSlice";
+import { register, login, logout, clearError, googleLogin } from "../store/slices/authSlice";
 import type { RootState, AppDispatch } from "../store/store";
 
 const useAuthHook = () => {
@@ -20,6 +20,12 @@ const useAuthHook = () => {
     [dispatch]
   );
 
+  const handleGoogleLoginFun = useCallback(
+  (email: string, name: string) =>
+    dispatch(googleLogin({ email, name })).unwrap(),
+  [dispatch]
+);
+
   const doLogout = useCallback(() => dispatch(logout()), [dispatch]);
   const clear = useCallback(() => dispatch(clearError()), [dispatch]);
 
@@ -29,6 +35,7 @@ const useAuthHook = () => {
     handleLoginFun,
     doLogout,
     clear,
+    handleGoogleLoginFun
   };
 };
 

@@ -1,14 +1,8 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../store/slices/authSlice";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import "../styles/navbar.css";
 import { IoLogOutOutline } from "react-icons/io5";
-// import { RootState } from "./store";
-
-// import { RootState, useAppDispatch } from "../store";
-// import { logout } from "../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../store/slices/authSlice";
+import "../styles/navbar.css";
 
 const Navbar = () => {
   const currentUser = useSelector((s: any) => s.auth.currentUser);
@@ -23,16 +17,16 @@ const Navbar = () => {
 
   console.log({ currentUser });
   return (
-    <nav className="navbar navbar-light px-lg-3 px-1 shadow-sm navbar-container">
+    <nav className="navbar navbar-light px-3 shadow-sm navbar-container">
       <Link className="navbar-brand" to="/">
         Kanban
       </Link>
       <div>
         {login ? (
           <>
-            <div className="d-flex justify-content-between ">
+            <div className="d-flex justify-content-between me-lg-2">
               {currentUser && (
-                <div className="d-flex align-items-center gap-2 me-4">
+                <div className="d-flex align-items-center gap-2 me-4 d-lg-block d-md-block d-none">
                   {/* Profile Image */}
 
                   <img
@@ -40,6 +34,7 @@ const Navbar = () => {
                       currentUser.profileImage || "./public/images/download.png"
                     }
                     alt="profile"
+                    className="me-2"
                     style={{
                       width: 38,
                       height: 38,

@@ -1,8 +1,8 @@
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import type { Task } from "../../types/types";
+import { BASE } from "../config";
 
-const BASE = "http://localhost:5000";
 const USERS = `${BASE}/users`;
 
 // Fetch user by id

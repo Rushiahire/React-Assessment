@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuthHook from "./useAuthHook";
-import { useNavigate } from "react-router-dom";
 
 const useLoginHook = () => {
-  const { auth, handleLoginFun } = useAuthHook();
+  const { auth, handleLoginFun,handleGoogleLoginFun } = useAuthHook();
   const navigate = useNavigate();
 
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -37,7 +37,7 @@ const useLoginHook = () => {
 
       const result = await handleLoginFun(values.identifier, values.password);
       if (result) {
-        toast.success("Login successful");
+        toast.success("Login successfully");
         localStorage.setItem("login", result.id);
         navigate("/");
       }
@@ -45,6 +45,24 @@ const useLoginHook = () => {
     [captchaToken, handleLoginFun, navigate]
   );
 
+ 
+  // GOOGLE LOGIN HANDLER
+  const handleGoogleLogin = async (credential: string) => {
+  const payload = JSON.parse(atob(credential?.split(".")[1]));
+
+  const email = payload.email;
+  const name = payload.name;
+
+  try {
+    const user = await handleGoogleLoginFun(email, name);
+    toast.success("Login with Google!");
+    localStorage.setItem("login", user.id);
+
+    navigate("/");
+  } catch {
+    toast.error("Google login failed");
+  }
+};
   return {
     auth,
     initialValues,
@@ -52,6 +70,7 @@ const useLoginHook = () => {
     showPassword,
     togglePassword,
     setCaptchaToken,
+    handleGoogleLogin
   };
 };
 

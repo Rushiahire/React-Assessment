@@ -14,7 +14,7 @@ const TaskSummary = () => {
   return (
     <>
       <div className="row">
-        <div className="col">
+        <div className="col-md-4 col-12">
           {loading ? (
             <span className="loader"></span>
           ) : (
@@ -27,7 +27,7 @@ const TaskSummary = () => {
           )}
         </div>
 
-        <div className="col">
+        <div className="col-md-4 col-12">
           {loading ? (
             <span className="loader"></span>
           ) : (
@@ -39,7 +39,7 @@ const TaskSummary = () => {
             </div>
           )}
         </div>
-        <div className="col">
+        <div className="col-md-4 col-12">
           {loading ? (
             <span className="loader"></span>
           ) : (

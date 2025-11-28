@@ -1,18 +1,13 @@
-// src/services/authApi.ts
 import axios from "axios";
 import type { User } from "../../types/types";
+import { BASE } from "../config";
 
-const BASE = "http://localhost:5000";
 const USERS = `${BASE}/users`;
 
-/**
- * Query json-server for users by query parameters.
- */
 export async function findUsersByQuery(query: Record<string, string>) {
   const { data } = await axios.get(USERS, { params: query });
   return data;
 }
-
 /**
  * Create user
  */

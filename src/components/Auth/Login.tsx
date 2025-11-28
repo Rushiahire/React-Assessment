@@ -7,6 +7,7 @@ import useLoginHook from "../../hooks/useLoginHook";
 import { RECAPTCHA_SITE_KEY } from "../../services/config";
 import "../../styles/login.css";
 import { loginValidation } from "../../validation/loginValidation";
+import GoogleLoginButton from "./GoogleLoginButton";
 
 const Login: React.FC = () => {
   const {
@@ -16,6 +17,7 @@ const Login: React.FC = () => {
     showPassword,
     togglePassword,
     setCaptchaToken,
+    handleGoogleLogin, // ⬅ MUST ADD THIS in your hook
   } = useLoginHook();
 
   return (
@@ -61,8 +63,6 @@ const Login: React.FC = () => {
                     className="form-control"
                     autoComplete="off"
                   />
-
-                  {/* Toggle Icon */}
                   <span
                     className="input-group-text password-toggle"
                     onClick={togglePassword}
@@ -86,13 +86,19 @@ const Login: React.FC = () => {
                 />
               </div>
 
+              {/* Submit */}
               <button
-                className="btn btn-primary my-3"
+                className="btn btn-primary my-3 w-100"
                 type="submit"
                 disabled={auth.loading || isSubmitting}
               >
                 {auth.loading ? "Logging in..." : "Login"}
               </button>
+
+              {/* Google Login Button */}
+              <div className="my-3">
+                <GoogleLoginButton onSuccess={handleGoogleLogin} />
+              </div>
 
               <div className="text-center">
                 Don't have an account? <Link to="/register">Signup</Link>

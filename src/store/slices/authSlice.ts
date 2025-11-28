@@ -18,13 +18,17 @@ export const register = createAsyncThunk<
   try {
     // duplicate username check
     if (payload.username) {
-      const same = await authApi.findUsersByQuery({ username: payload.username });
-      if (same && same.length > 0) return rejectWithValue("Username already exists");
+      const same = await authApi.findUsersByQuery({
+        username: payload.username,
+      });
+      if (same && same.length > 0)
+        return rejectWithValue("Username already exists");
     }
     // duplicate email check
     if (payload.email) {
       const same = await authApi.findUsersByQuery({ email: payload.email });
-      if (same && same.length > 0) return rejectWithValue("Email already registered");
+      if (same && same.length > 0)
+        return rejectWithValue("Email already registered");
     }
     await authApi.createUser(payload);
     return { success: true };
@@ -48,6 +52,36 @@ export const login = createAsyncThunk<
   }
 });
 
+// GOOGLE LOGIN THUNK
+export const googleLogin = createAsyncThunk<
+  User,
+  { email: string; name: string },
+  { rejectValue: string }
+>("auth/googleLogin", async ({ email, name }, { rejectWithValue }) => {
+  try {
+    const found = await authApi.findUsersByQuery({ email });
+
+    let user: User;
+
+    if (found.length > 0) {
+      user = found[0]; // existing user
+    } else {
+      // auto create user
+      user = await authApi.createUser({
+        name,
+        email,
+        username: email.split("@")[0],
+        password: null,
+        provider: "google",
+      });
+    }
+
+    return user;
+  } catch (err: any) {
+    return rejectWithValue("Google login failed");
+  }
+});
+
 const slice = createSlice({
   name: "auth",
   initialState,
@@ -64,26 +98,62 @@ const slice = createSlice({
     // rehydrate from localStorage if needed
     setUser(state, action: any) {
       state.currentUser = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     // register
-    builder.addCase(register.pending, (s) => { s.loading = true; s.error = null; });
-    builder.addCase(register.fulfilled, (s) => { s.loading = false; s.error = null; });
-    builder.addCase(register.rejected, (s, a) => { s.loading = false; s.error = a.payload || a.error.message || "Register failed"; });
+    builder.addCase(register.pending, (s) => {
+      s.loading = true;
+      s.error = null;
+    });
+    builder.addCase(register.fulfilled, (s) => {
+      s.loading = false;
+      s.error = null;
+    });
+    builder.addCase(register.rejected, (s, a) => {
+      s.loading = false;
+      s.error = a.payload || a.error.message || "Register failed";
+    });
+
+    //google login
+    builder.addCase(googleLogin.pending, (s) => {
+      s.loading = true;
+      s.error = null;
+    });
+
+    builder.addCase(googleLogin.fulfilled, (s, a) => {
+      s.loading = false;
+      s.currentUser = a.payload;
+
+      try {
+        localStorage.setItem("currentUser", JSON.stringify(a.payload));
+      } catch {}
+    });
+
+    builder.addCase(googleLogin.rejected, (s, a) => {
+      s.loading = false;
+      s.error = a.payload || "Google login failed";
+    });
 
     // login
-    builder.addCase(login.pending, (s) => { s.loading = true; s.error = null; });
+    builder.addCase(login.pending, (s) => {
+      s.loading = true;
+      s.error = null;
+    });
     builder.addCase(login.fulfilled, (s, a) => {
-      console.log({s,a})
       s.loading = false;
       s.currentUser = a.payload;
       s.error = null;
       // persist
-      try { localStorage.setItem("currentUser", JSON.stringify(a.payload)); } catch {}
+      try {
+        localStorage.setItem("currentUser", JSON.stringify(a.payload));
+      } catch {}
     });
-    builder.addCase(login.rejected, (s, a) => { s.loading = false; s.error = a.payload || a.error.message || "Login failed"; });
-  }
+    builder.addCase(login.rejected, (s, a) => {
+      s.loading = false;
+      s.error = a.payload || a.error.message || "Login failed";
+    });
+  },
 });
 
 export const { logout, clearError, setUser } = slice.actions;

@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useRegisterHook from "../../hooks/useRegisterHook";
 import "../../styles/register.css";
+import { Link } from "react-router-dom";
 
 const Register: React.FC = () => {
   const {
@@ -145,6 +146,9 @@ const Register: React.FC = () => {
           >
             {loading ? "Registering..." : "Register"}
           </button>
+          <div className="text-center">
+            Already have account ? <Link to="/login">Sign In</Link>
+          </div>
         </form>
       </div>
     </div>
