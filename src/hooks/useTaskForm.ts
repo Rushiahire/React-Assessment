@@ -12,16 +12,13 @@ interface Props {
   onClose: () => void;
 }
 
-const useTaskForm = ({ editingTaskId, show, onClose }: Props)=> {
+const useTaskForm = ({ editingTaskId, show, onClose }: Props) => {
   const dispatch = useAppDispatch();
 
   const tasks = useAppSelector((s) => s.tasks.items);
   const currentUser = useAppSelector((s) => s.auth.currentUser);
 
-  const todayDate = useMemo(
-    () => new Date().toISOString().split("T")[0],
-    []
-  );
+  const todayDate = useMemo(() => new Date().toISOString().split("T")[0], []);
 
   /** Find editing task (memoized) */
   const editingTask = useMemo(
@@ -51,8 +48,15 @@ const useTaskForm = ({ editingTaskId, show, onClose }: Props)=> {
     validationSchema: taskFormValidation,
     onSubmit: async (values, { resetForm }) => {
       if (!currentUser) return;
-
       if (editingTask) {
+        // RUN DUPLICATE CHECK ONLY IF TASK NAME CHANGED
+        const nameChanged = values.taskName !== editingTask.taskName;
+
+        if (nameChanged && checkDuplicate(values.taskName)) {
+          toast.error("Duplicate Entry found");
+          return;
+        }
+
         // UPDATE
         await dispatch(
           patchTask({
@@ -101,6 +105,6 @@ const useTaskForm = ({ editingTaskId, show, onClose }: Props)=> {
     editingTask,
     formik,
   };
-}
+};
 
 export default useTaskForm;
