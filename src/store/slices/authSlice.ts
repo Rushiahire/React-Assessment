@@ -45,6 +45,8 @@ export const login = createAsyncThunk<
 >("auth/login", async ({ identifier, password }, { rejectWithValue }) => {
   try {
     const user = await authApi.loginWithIdentifier(identifier, password);
+    console.log({ user });
+    if (user?.provider === "google") return user;
     if (!user) return rejectWithValue("Invalid credentials");
     return user;
   } catch (err: any) {

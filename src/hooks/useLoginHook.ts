@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import useAuthHook from "./useAuthHook";
 
 const useLoginHook = () => {
-  const { auth, handleLoginFun,handleGoogleLoginFun } = useAuthHook();
+  const { auth, handleLoginFun, handleGoogleLoginFun } = useAuthHook();
   const navigate = useNavigate();
 
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -27,7 +27,6 @@ const useLoginHook = () => {
     []
   );
 
-  /** Form Submit Handler */
   const handleSubmit = useCallback(
     async (values: typeof initialValues) => {
       if (!captchaToken) {
@@ -35,34 +34,47 @@ const useLoginHook = () => {
         return;
       }
 
-      const result = await handleLoginFun(values.identifier, values.password);
-      if (result) {
-        toast.success("Login successfully");
-        localStorage.setItem("login", result.id);
-        navigate("/");
+      try {
+        const result = await handleLoginFun(values.identifier, values.password);
+
+        if (result?.provider === "google") {
+          toast.error(
+            "This account uses Google login. Please create a password."
+          );
+          navigate("/set-password", {
+            state: { email: values.identifier },
+          });
+          return;
+        }
+        if (result) {
+          toast.success("Login successfully");
+          localStorage.setItem("login", result.id);
+          navigate("/");
+        }
+      } catch (err: any) {
+        // toast.error(err.message || "Login failed");
       }
     },
     [captchaToken, handleLoginFun, navigate]
   );
 
- 
   // GOOGLE LOGIN HANDLER
   const handleGoogleLogin = async (credential: string) => {
-  const payload = JSON.parse(atob(credential?.split(".")[1]));
+    const payload = JSON.parse(atob(credential?.split(".")[1]));
 
-  const email = payload.email;
-  const name = payload.name;
+    const email = payload.email;
+    const name = payload.name;
 
-  try {
-    const user = await handleGoogleLoginFun(email, name);
-    toast.success("Login with Google!");
-    localStorage.setItem("login", user.id);
+    try {
+      const user = await handleGoogleLoginFun(email, name);
+      toast.success("Login with Google!");
+      localStorage.setItem("login", user.id);
 
-    navigate("/");
-  } catch {
-    toast.error("Google login failed");
-  }
-};
+      navigate("/");
+    } catch {
+      toast.error("Google login failed");
+    }
+  };
   return {
     auth,
     initialValues,
@@ -70,7 +82,7 @@ const useLoginHook = () => {
     showPassword,
     togglePassword,
     setCaptchaToken,
-    handleGoogleLogin
+    handleGoogleLogin,
   };
 };
 

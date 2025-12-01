@@ -12,10 +12,10 @@ export async function findUsersByQuery(query: Record<string, string>) {
  * Create user
  */
 export async function createUser(payload: Partial<User>) {
-  const body = { 
+  const body = {
     ...payload,
     id: payload.id ?? String(Date.now()),
-    tasks: []
+    tasks: [],
   };
 
   const { data } = await axios.post(USERS, body);
@@ -25,16 +25,20 @@ export async function createUser(payload: Partial<User>) {
 /**
  * Login using username/email + password
  */
-export async function loginWithIdentifier(identifier: string, password: string) {
+export async function loginWithIdentifier(
+  identifier: string,
+  password: string
+) {
   // Try username + password
   let { data: arr } = await axios.get(USERS, {
-    params: { username: identifier, password }
+    params: { username: identifier, password },
   });
+  console.log({ arr });
   if (arr?.length > 0) return arr[0];
 
   // Try email + password
   ({ data: arr } = await axios.get(USERS, {
-    params: { email: identifier, password }
+    params: { email: identifier, password },
   }));
   if (arr?.length > 0) return arr[0];
 

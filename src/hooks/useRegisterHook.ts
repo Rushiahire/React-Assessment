@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthHook from "./useAuthHook";
 import { registerValidation } from "../validation/registerValidation";
@@ -18,7 +18,7 @@ const useRegisterHook = () => {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-useEffect(() => {
+  useEffect(() => {
     clear();
     return () => {
       clear();
@@ -27,7 +27,6 @@ useEffect(() => {
 
   const togglePassword = () => setShowPassword((prev) => !prev);
 
- 
   const compressImage = useCallback((file: File) => {
     return new Promise<string>((resolve) => {
       const reader = new FileReader();
@@ -57,49 +56,51 @@ useEffect(() => {
 
   const onImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      setFileName(null);
+      setPreview(null);
+      return;
+    }
 
     const compressedImage = await compressImage(file);
     setPreview(compressedImage);
     setFileName(compressedImage);
   };
 
-
-  const formik = useFormik({
-    initialValues: {
+  const initialValues = useMemo(
+    () => ({
       name: "",
       username: "",
       email: "",
       contact: "",
       password: "",
-    },
-    validationSchema: registerValidation,
+    }),
+    []
+  );
 
-    onSubmit: async (values, { resetForm }) => {
-      setSuccessMsg(null);
+  const handleSubmit = async (values: typeof initialValues, helpers: any) => {
+    setSuccessMsg(null);
 
-      const payload = {
-        ...values,
-        profileImage: fileName ?? null, 
-      };
+    const payload = {
+      ...values,
+      profileImage: fileName ?? null,
+    };
 
-      try {
-        await handleRegisterFun(payload);
-        setSuccessMsg("Registration successful! You can now log in.");
-        resetForm();
-        setPreview(null);
-        setFileName(null);
+    try {
+      await handleRegisterFun(payload);
 
-        // Navigate only AFTER success message shows briefly
-        setTimeout(() => navigate("/login"), 500);
-      } catch (err: any) {
-        console.error(err?.message);
-      }
-    },
-  });
+      setSuccessMsg("Registration successful! You can now log in.");
+      helpers.resetForm();
+      setPreview(null);
+      setFileName(null);
+
+      setTimeout(() => navigate("/login"), 500);
+    } catch (err: any) {
+      console.error(err?.message);
+    }
+  };
 
   return {
-    formik,
     loading,
     error,
     preview,
@@ -107,7 +108,9 @@ useEffect(() => {
     onImage,
     showPassword,
     togglePassword,
+    initialValues,
+    handleSubmit,
   };
-}
+};
 
 export default useRegisterHook;

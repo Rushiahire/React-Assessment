@@ -5,6 +5,7 @@ import Loader from "../components/common/Loader";
 import NotFoundPage from "../components/NoFoundPage";
 import ProtectedRoute from "./PrivateRoute";
 import AppLayout from "../components/Layout/AppLayout";
+import SetPassword from "../components/Auth/SetPassword";
 
 const Login = React.lazy(() => import("../components/Auth/Login"));
 const Register = React.lazy(() => import("../components/Auth/Register"));
@@ -34,6 +35,7 @@ const AppRoutes = () => {
           >
             <Route path="/" element={<Dashboard />} />
           </Route>
+          <Route path="/set-password" element={<SetPassword />} />
 
           {/* NOT FOUND */}
           <Route path="*" element={<NotFoundPage />} />

@@ -1,22 +1,21 @@
-import Navbar from "../Navbar";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { Badge } from "react-bootstrap";
 import { IoMdAdd } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import useDashboardHook from "../../hooks/useDashboardHook";
 import { localMove, patchTask, removeTask } from "../../store/slices/taskSlice";
-import Loader from "../common/Loader";
 import "../../styles/dashboard.css";
 import type { Task } from "../../types/types";
 import TaskCard from "../Cards/TaskCard";
+import Loader from "../common/Loader";
+import ConfirmModal from "../common/ConfirmModal";
 const TaskFormModal = React.lazy(() => import("../Modal/TaskFormModal"));
 const TaskSummary = React.lazy(() => import("./TaskSummary"));
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
   const {
-    tasks,
     loading,
     STAGE_TITLES,
     tasksByStage,
@@ -27,6 +26,8 @@ const Dashboard: React.FC = () => {
     setShowModal,
     onDragStart,
     onDragEnd,
+    confirmDeleteId,
+    setConfirmDeleteId,
   } = useDashboardHook();
 
   return (
@@ -109,10 +110,7 @@ const Dashboard: React.FC = () => {
                                           );
                                         }}
                                         onDelete={() => {
-                                          if (window.confirm("Delete task?"))
-                                            dispatch(
-                                              removeTask(task.id) as any
-                                            );
+                                          setConfirmDeleteId(task.id); // open confirm modal
                                         }}
                                       />
                                     </div>
@@ -130,7 +128,7 @@ const Dashboard: React.FC = () => {
               ))}
             </div>
 
-            {/* --- TRASH DROP AREA (OUTSIDE GRID) --- */}
+            {/* TRASH DROP AREA (OUTSIDE GRID) */}
             <Droppable droppableId="trash">
               {(provided, snapshot) => (
                 <div
@@ -174,6 +172,17 @@ const Dashboard: React.FC = () => {
           </Suspense>
         </div>
       )}
+
+      <ConfirmModal
+        show={!!confirmDeleteId}
+        title="Delete Task?"
+        message="Are you sure you want to delete this task?"
+        onCancel={() => setConfirmDeleteId(null)}
+        onConfirm={() => {
+          dispatch(removeTask(confirmDeleteId!) as any);
+          setConfirmDeleteId(null);
+        }}
+      />
     </>
   );
 };

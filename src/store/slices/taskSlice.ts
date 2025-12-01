@@ -21,10 +21,9 @@ export const loadTasks = createAsyncThunk<Task[], string>(
   }
 );
 
-
 export const addTask = createAsyncThunk<Task, Partial<Task>>(
   "tasks/add",
-  async (payload:any, { rejectWithValue }) => {
+  async (payload: any, { rejectWithValue }) => {
     try {
       return await taskApi.createTask(payload);
     } catch (err: any) {
@@ -35,7 +34,7 @@ export const addTask = createAsyncThunk<Task, Partial<Task>>(
 
 export const patchTask = createAsyncThunk(
   "tasks/patch",
-  async ({ id, data }:any, { rejectWithValue }) => {
+  async ({ id, data }: any, { rejectWithValue }) => {
     try {
       return await taskApi.updateTaskApi(id, data);
     } catch (err: any) {
@@ -43,8 +42,6 @@ export const patchTask = createAsyncThunk(
     }
   }
 );
-
-
 
 export const removeTask = createAsyncThunk<string, string>(
   "tasks/remove",
@@ -65,17 +62,29 @@ const slice = createSlice({
     // local optimistic move (used by drag-end before server patch)
     localMove(state, action: any) {
       const t = state?.items?.find((x) => x.id === action.payload.id);
-      if (t) t.stage = action.payload.newStage as 0|1|2|3;
-    }
+      if (t) t.stage = action.payload.newStage as 0 | 1 | 2 | 3;
+    },
   },
   extraReducers: (b) => {
-    b.addCase(loadTasks.pending, (s) => { s.loading = true; s.error = null; });
-    b.addCase(loadTasks.fulfilled, (s, a) => { s.items = a.payload; s.loading = false; });
-    b.addCase(loadTasks.rejected, (s, a) => { s.loading = false; s.error = a.payload as string || a.error.message; });
-    b.addCase(addTask.fulfilled, (s, a) => { s.items.push(a.payload); });
+    b.addCase(loadTasks.pending, (s) => {
+      s.loading = true;
+      s.error = null;
+    });
+    b.addCase(loadTasks.fulfilled, (s, a) => {
+      s.items = a.payload;
+      s.loading = false;
+    });
+    b.addCase(loadTasks.rejected, (s, a) => {
+      s.loading = false;
+      s.error = (a.payload as string) || a.error.message;
+    });
 
-
-    b.addCase(addTask.rejected, (s, a) => { s.error = a.payload as string || a.error.message; });
+    b.addCase(addTask.fulfilled, (s, a) => {
+      s.items.push(a.payload);
+    });
+    b.addCase(addTask.rejected, (s, a) => {
+      s.error = (a.payload as string) || a.error.message;
+    });
 
     b.addCase(patchTask.fulfilled, (s, a) => {
       const idx = s.items.findIndex((x) => x.id === a.payload.id);
@@ -85,7 +94,7 @@ const slice = createSlice({
     b.addCase(removeTask.fulfilled, (s, a) => {
       s.items = s.items.filter((t) => t.id !== a.payload);
     });
-  }
+  },
 });
 
 export const { localMove } = slice.actions;

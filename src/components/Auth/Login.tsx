@@ -96,7 +96,7 @@ const Login: React.FC = () => {
               </button>
 
               {/* Google Login Button */}
-              <div className="my-3">
+              <div className="my-2">
                 <GoogleLoginButton onSuccess={handleGoogleLogin} />
               </div>
 
