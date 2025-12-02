@@ -37,15 +37,16 @@ const useLoginHook = () => {
       try {
         const result = await handleLoginFun(values.identifier, values.password);
 
-        if (result?.provider === "google") {
-          toast.error(
-            "This account uses Google login. Please create a password."
-          );
-          navigate("/set-password", {
-            state: { email: values.identifier },
-          });
-          return;
-        }
+        // if (result?.provider === "google") {
+        //   toast.error(
+        //     "This account uses Google login. Please create a password."
+        //   );
+        //   navigate("/set-password", {
+        //     state: { email: values.identifier },
+        //   });
+        //   return;
+        // }
+        console.log({ result });
         if (result) {
           toast.success("Login successfully");
           localStorage.setItem("login", result.id);

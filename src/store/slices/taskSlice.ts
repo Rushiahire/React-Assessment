@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import * as taskApi from "../../services/api/taskApi";
 import type { Task } from "../../types/types";
 
@@ -7,6 +11,11 @@ type TasksState = {
   loading: boolean;
   error: string | null | undefined;
 };
+
+interface MovePayload {
+  id: number;
+  newStage: number;
+}
 
 const initialState: TasksState = { items: [], loading: false, error: null };
 
@@ -60,8 +69,8 @@ const slice = createSlice({
   initialState,
   reducers: {
     // local optimistic move (used by drag-end before server patch)
-    localMove(state, action: any) {
-      const t = state?.items?.find((x) => x.id === action.payload.id);
+    localMove(state, action: PayloadAction<MovePayload>) {
+      const t = state?.items?.find((x: any) => x.id === action.payload.id);
       if (t) t.stage = action.payload.newStage as 0 | 1 | 2 | 3;
     },
   },

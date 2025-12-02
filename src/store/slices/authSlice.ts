@@ -46,7 +46,7 @@ export const login = createAsyncThunk<
   try {
     const user = await authApi.loginWithIdentifier(identifier, password);
     console.log({ user });
-    if (user?.provider === "google") return user;
+    // if (user?.provider === "google") return user;
     if (!user) return rejectWithValue("Invalid credentials");
     return user;
   } catch (err: any) {
@@ -73,7 +73,7 @@ export const googleLogin = createAsyncThunk<
         name,
         email,
         username: email.split("@")[0],
-        password: null,
+        password: "",
         provider: "google",
       });
     }
