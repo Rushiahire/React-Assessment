@@ -168,7 +168,7 @@ const Register: React.FC = () => {
               </button>
 
               {/* LINK */}
-              <div className="text-center">
+              <div className="text-center py-3">
                 Already have an account? <Link to="/login">Sign In</Link>
               </div>
             </Form>

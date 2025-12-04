@@ -11,7 +11,8 @@ const Register = React.lazy(() => import("../components/Auth/Register"));
 const Dashboard = React.lazy(() => import("../components/Dashboard/Dashboard"));
 
 const AppRoutes = () => {
-  const currentUser = useSelector((s: any) => s?.auth?.currentUser);
+  // const currentUser = useSelector((s: any) => s?.auth?.currentUser);
+  const currentUser = localStorage.getItem("currentUser");
 
   return (
     <BrowserRouter>

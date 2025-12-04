@@ -80,6 +80,7 @@ const slice = createSlice({
       s.error = null;
     });
     b.addCase(loadTasks.fulfilled, (s, a) => {
+      console.log({ s, a });
       s.items = a.payload;
       s.loading = false;
     });

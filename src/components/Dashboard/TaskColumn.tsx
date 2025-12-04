@@ -20,7 +20,7 @@ const TaskColumn = ({ title, idx, tasks, onEdit, onMove, onDelete }: any) => {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 className="mt-2 flex-grow-1 overflow-auto"
-                style={{ minHeight: 120, maxHeight: "60vh" }}
+                style={{ minHeight: 100, maxHeight: "60vh" }}
               >
                 {tasks.map((task: Task, index: number) => (
                   <Draggable key={task.id} draggableId={task.id} index={index}>

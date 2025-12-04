@@ -4,14 +4,14 @@ import { BASE } from "../config";
 
 const USERS = `${BASE}/users`;
 
-export async function findUsersByQuery(query: Record<string, string>) {
+export const findUsersByQuery = async (query: Record<string, string>) => {
   const { data } = await axios.get(USERS, { params: query });
   return data;
-}
+};
 /**
  * Create user
  */
-export async function createUser(payload: Partial<User>) {
+export const createUser = async (payload: Partial<User>) => {
   const body = {
     ...payload,
     id: payload.id ?? String(Date.now()),
@@ -20,15 +20,15 @@ export async function createUser(payload: Partial<User>) {
 
   const { data } = await axios.post(USERS, body);
   return data;
-}
+};
 
 /**
  * Login using username/email + password
  */
-export async function loginWithIdentifier(
+export const loginWithIdentifier = async (
   identifier: string,
   password: string
-) {
+) => {
   // Try username + password
   let { data: arr } = await axios.get(USERS, {
     params: { username: identifier, password },
@@ -43,4 +43,4 @@ export async function loginWithIdentifier(
   if (arr?.length > 0) return arr[0];
 
   return null;
-}
+};

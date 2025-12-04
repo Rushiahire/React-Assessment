@@ -30,7 +30,6 @@ const Dashboard: React.FC = () => {
     isDragging,
   } = useDashboardHook();
 
-  // --- memoized handlers ---
   const handleEdit = useCallback((task: Task) => {
     setEditingTaskId(task.id);
     setShowModal(true);

@@ -19,36 +19,6 @@
       ]
     },
     {
-      "id": "1764564713684",
-      "name": "TestUser",
-      "username": "testuser",
-      "email": "test@gmail.com",
-      "contact": 9988775488,
-      "password": "testing",
-      "profileImage": null,
-      "tasks": []
-    },
-    {
-      "id": "1764565157403",
-      "name": "ketan",
-      "username": "ketan",
-      "email": "ketan@gmail.com",
-      "contact": 9988574832,
-      "password": "Ketan@12",
-      "profileImage": null,
-      "tasks": []
-    },
-    {
-      "id": "1764580198087",
-      "name": "kailas",
-      "username": "kailas001",
-      "email": "kailas@gmail.com",
-      "contact": 7878678799,
-      "password": "Kailas@1447",
-      "profileImage": null,
-      "tasks": []
-    },
-    {
       "id": "1764582434442",
       "name": "user",
       "username": "user1",
@@ -83,6 +53,60 @@
           "deadline": "2025-12-08",
           "stage": 0,
           "ownerId": "1764658797170"
+        }
+      ]
+    },
+    {
+      "id": "1764741885494",
+      "name": "Rushi Ahire",
+      "email": "rushiahire9567@gmail.com",
+      "username": "rushiahire9567",
+      "password": "",
+      "provider": "google",
+      "tasks": []
+    },
+    {
+      "id": "1764767271227",
+      "name": "testUser",
+      "username": "test01",
+      "email": "test@gmail.com",
+      "contact": 9988774728,
+      "password": "#Test123",
+      "profileImage": "data:image/jpeg;base64,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",
+      "tasks": [
+        {
+          "id": "9bb382e5-6ce3-402a-919b-040cee0e0b94",
+          "taskName": "testq",
+          "priority": "medium",
+          "deadline": "2025-12-22",
+          "stage": 2,
+          "ownerId": "1764767271227"
+        },
+        {
+          "id": "3293d816-ea35-4228-8419-096451cafa62",
+          "taskName": "redux Store",
+          "priority": "low",
+          "deadline": "2025-12-08",
+          "stage": 0,
+          "ownerId": "1764767271227"
+        }
+      ]
+    },
+    {
+      "id": "1764768947648",
+      "name": "Rushikesh Ahire",
+      "email": "rushikeshahire24@gmail.com",
+      "username": "rushikeshahire24",
+      "password": "",
+      "provider": "google",
+      "tasks": [
+        {
+          "id": "efa0f4d8-ff4c-4d2d-ae26-7d48fff89c1a",
+          "taskName": "Testuser",
+          "priority": "medium",
+          "deadline": "2025-12-24",
+          "stage": 0,
+          "ownerId": "1764768947648"
         }
       ]
     }

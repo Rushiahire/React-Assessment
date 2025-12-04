@@ -15,7 +15,6 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  console.log({ currentUser });
   return (
     <nav className="navbar navbar-light px-3 shadow-sm navbar-container">
       <Link className="navbar-brand" to="/">
