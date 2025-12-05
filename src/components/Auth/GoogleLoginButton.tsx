@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { client_id } from "../../services/config";
+import { CLIENT_ID as client_id } from "../../services/config";
 
 declare global {
   interface Window {
